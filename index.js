@@ -15,6 +15,9 @@ function getRepos(newLink) {
         .then(responseJson => displayResults(responseJson))
         .catch(err => {
             $('#js-error-message').text(`Something went wrong: ${err.message}`);
+            $('#results').addClass('hidden');
+            $('#results-list').empty();
+
         });
 
 }
@@ -22,7 +25,13 @@ function getRepos(newLink) {
 function displayResults(responseJson) {
     console.log(responseJson);
     $('#results-list').empty();
+    $('#js-error-message').empty();
     console.log(responseJson.length);
+    if (responseJson.length === 0) {
+        $('#results-list').append(`
+        <p>No repositories found for this user
+        </p>`);
+    }
     for (let i=0; i < responseJson.length; i++){
         $('#results-list').append(`
         <li><h3><a href='${responseJson[i].html_url}'>${responseJson[i].name}
